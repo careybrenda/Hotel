@@ -24,7 +24,7 @@ public abstract class DialogueBase : MonoBehaviour
     protected UnityAction<Details> someListener;
 
     protected abstract string GetEventTrigger();
-    protected abstract EventManager.DialogueAction GetDialogueAction();
+    protected abstract EventManagerOriginal.DialogueAction GetDialogueAction();
 
 
 
@@ -49,12 +49,12 @@ public abstract class DialogueBase : MonoBehaviour
     protected void SubscribeToEvent()
     {
 
-        EventManager.StartListening(GetEventTrigger(), someListener);
+		EventManagerOriginal.StartListening(GetEventTrigger(), someListener);
     }
 
     protected void UnsubscribeToEvent()
     {
-        EventManager.StopListening(GetEventTrigger(), someListener);
+		EventManagerOriginal.StopListening(GetEventTrigger(), someListener);
     }
 
 
@@ -94,7 +94,7 @@ public abstract class DialogueBase : MonoBehaviour
                     BuildEventStructForReturn();
 
 
-                    EventManager.TriggerEvent(dataDetails);
+					EventManagerOriginal.TriggerEvent(dataDetails);
                     Img.enabled = false;
                     this.enabled = false;
                     return true;

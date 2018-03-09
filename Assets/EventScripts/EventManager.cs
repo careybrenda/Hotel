@@ -1,235 +1,195 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.Events;
+using System.Collections;
 using System.Collections.Generic;
 
+public class EventManager : MonoBehaviour {
 
+	private Dictionary <string, UnityEvent> eventDictionary;
+	private Dictionary <string, UnityEvent<Vector3>> eventDictionaryVector;
+	private Dictionary <string, UnityEvent<float>> eventDictionaryFloat;
 
-public struct DialogueOptions
-{
-    string _actionName;
+	private static EventManager eventManager;
 
-    public DialogueOptions(string name)
-    {
-
-        _actionName = name;
-
-    }
-
-    public string GetDialogueName()
-    {
-        return _actionName;
-    }
-
-}
-
-
-
-public struct Details
-{
-	private GameObject _sender;
-	private GameObject _target;
-
-	private string _whoToMoveTo;
-
-    private Dictionary<EventManager.DialogueAction, DialogueOptions> allOptions;
-
-
-    
-
-	public void SetTargetObj(GameObject obj)
+	[System.Serializable]
+	public class MyVector3Event : UnityEvent<Vector3>
 	{
-		_target = obj;
 	}
 
-	public void SetSenderObj(GameObject obj)
+	[System.Serializable]
+	public class MyFloatEvent : UnityEvent<float>
 	{
-		_sender = obj;
-	}
-
-	public void SetMoveToString(string whoToMoveTo)
-	{
-		_whoToMoveTo = whoToMoveTo;
-	}
-
-	public void SetDialogueAction(EventManager.DialogueAction action)
-	{
-        DialogueOptions newDialogue = new DialogueOptions(action.ToString());
-        if(allOptions == null)
-        {
-            allOptions = new Dictionary<EventManager.DialogueAction, DialogueOptions>();
-        }
-
-        allOptions.Add(action, newDialogue);
-
-
-    }
-
- 
-    public EventManager.DialogueAction GetNextDialogueAction()
-    {
-        foreach (KeyValuePair<EventManager.DialogueAction, DialogueOptions> entry in allOptions)
-        {
-          
-            return entry.Key;
-            
-        }
-        return EventManager.DialogueAction.None;
-
-    }
-
-    public void SetDialogueAsComplete(EventManager.DialogueAction finished)
-    {
-        bool remove = false;
-        foreach (KeyValuePair<EventManager.DialogueAction, DialogueOptions> entry in allOptions)
-        {
-            if (entry.Key == finished)
-            {           
-                remove = true;  
-            }
-        }
-        if(remove == true)
-        {
-           // Debug.Log("SetDialogueAsComplete: remove = " + finished.ToString());
-            allOptions.Remove(finished);
-        }
-       
-    }
-
-    public string GetMoveString()
-	{
-		return _whoToMoveTo;
-	}
-
-	
-
-
-
-    public GameObject GetTargetObj()
-	{
-		return _target;
-	}
-
-	public GameObject GetSenderObj()
-	{
-		return _sender;
 	}
 
 
+	//#####INITIALISATION###########
+	#region Initialisation
 
-}
-
-
-[System.Serializable]
-public class SenderEvent : UnityEvent<Details> { }
-
-
-public class EventManager : MonoBehaviour
-{
-
-	public const int MAX_INTERACTIONS = 4;
-
-	public enum DialogueAction
+	public static EventManager instance
 	{
-		None,
-		Hello,
-		CheckIn,
-		Accepted,
-		Denied,
-        GetKey,
-	}
-		
-
-	private Dictionary<string, SenderEvent> eventDictionary;
-
-    private static EventManager eventManager;
-
-
-	[SerializeField]
-	public SenderEvent DoneEvent;
-
-    public static EventManager instance
-    {
-        get
-        {
-            if(!eventManager)
-            {
-                eventManager = FindObjectOfType(typeof(EventManager)) as EventManager;
-
-                if(!eventManager)
-                {
-                    Debug.LogError("There needs to be one active EventManager script on a GameObject in your scene. ");
-                }
-                else
-                {
-                    eventManager.Initialise();
-                }
-            }
-            return eventManager;
-        }
-    }
-
-    void Initialise()
-    {
-        if(eventDictionary == null)
-        {
-			eventDictionary = new Dictionary<string, SenderEvent>();
-        }
-    }
-
-	public static void StartListening(string eventName, UnityAction<Details> listener)
-    {
-
-       
-
-
-        SenderEvent thisEvent = null;
-        if(instance.eventDictionary.TryGetValue(eventName, out thisEvent))
-        {
-			
-			thisEvent.AddListener(listener);
-        }
-        else
-        {
-			thisEvent = new SenderEvent();
-			thisEvent.AddListener(listener);
-
-            instance.eventDictionary.Add(eventName, thisEvent);
-        }
-    }
-
-	public static void StopListening(string eventName, UnityAction<Details> listener)
-    {
-        if(eventManager == null)
-        {
-            return;
-        }
-
-		SenderEvent thisEvent = null;
-        if (instance.eventDictionary.TryGetValue(eventName, out thisEvent))
-        {
-			thisEvent.RemoveListener(listener);
-        }
-    }
-
-
-	public static void TriggerEvent(Details data)
-    {
-
-       
-
-        //Debug.Log("TriggerEvent: GetNextDialogueAction = " + data.GetNextDialogueAction().ToString());
-        SenderEvent thisEvent = null;
-		if(instance.eventDictionary.TryGetValue(data.GetNextDialogueAction().ToString(), out thisEvent))
+		get
 		{
-            
-			thisEvent.Invoke(data);
-            
+			if (!eventManager)
+			{
+				eventManager = FindObjectOfType (typeof (EventManager)) as EventManager;
+
+				if (!eventManager)
+				{
+					Debug.LogError ("There needs to be one active EventManager script on a GameObject in your scene.");
+				}
+				else
+				{
+					eventManager.Init (); 
+				}
+			}
+
+			return eventManager;
 		}
+	}
 
-        data.SetDialogueAsComplete(data.GetNextDialogueAction());
+	void Init ()
+	{
+		if (eventDictionary == null)
+		{
+			eventDictionary = new Dictionary<string, UnityEvent>();
+		}
+		if (eventDictionaryVector == null)
+		{
+			eventDictionaryVector = new Dictionary<string, UnityEvent<Vector3>>();
+		}
+		if (eventDictionaryFloat == null)
+		{
+			eventDictionaryFloat = new Dictionary<string, UnityEvent<float>>();
+		}
+	}
 
-    }
 
-	
+	#endregion
+
+
+
+	#region Start Listening
+
+
+	public static void StartListening (string eventName, UnityAction listener)
+	{
+		UnityEvent thisEvent = null;
+		if (instance.eventDictionary.TryGetValue (eventName, out thisEvent))
+		{
+			thisEvent.AddListener (listener);
+		} 
+		else
+		{
+			thisEvent = new UnityEvent ();
+			thisEvent.AddListener (listener);
+			instance.eventDictionary.Add (eventName, thisEvent);
+		}
+	}
+
+	public static void StartListening (string eventName, UnityAction<Vector3> listener)
+	{
+		UnityEvent<Vector3> thisEvent = null;
+		if (instance.eventDictionaryVector.TryGetValue (eventName, out thisEvent))
+		{
+			thisEvent.AddListener (listener);
+		} 
+		else
+		{
+			thisEvent = new MyVector3Event();
+			thisEvent.AddListener (listener);
+			instance.eventDictionaryVector.Add (eventName, thisEvent);
+		}
+	}
+
+	public static void StartListening (string eventName, UnityAction<float> listener)
+	{
+		UnityEvent<float> thisEvent = null;
+		if (instance.eventDictionaryFloat.TryGetValue (eventName, out thisEvent))
+		{
+			thisEvent.AddListener (listener);
+		} 
+		else
+		{
+			thisEvent = new MyFloatEvent();
+			thisEvent.AddListener (listener);
+			instance.eventDictionaryFloat.Add (eventName, thisEvent);
+		}
+	}
+
+	#endregion /Start listening
+
+
+	#region Stop Listening
+
+
+
+	public static void StopListening (string eventName, UnityAction listener)
+	{
+		if (eventManager == null) return;
+		UnityEvent thisEvent = null;
+		if (instance.eventDictionary.TryGetValue (eventName, out thisEvent))
+		{
+			thisEvent.RemoveListener (listener);
+		}
+	}
+
+	public static void StopListening (string eventName, UnityAction<Vector3> listener)
+	{
+		if (eventManager == null) return;
+		UnityEvent<Vector3>  thisEvent = null;
+		if (instance.eventDictionaryVector.TryGetValue (eventName, out thisEvent))
+		{
+			thisEvent.RemoveListener (listener);
+		}
+	}
+
+	public static void StopListening (string eventName, UnityAction<float> listener)
+	{
+		if (eventManager == null) return;
+		UnityEvent<float>  thisEvent = null;
+		if (instance.eventDictionaryFloat.TryGetValue (eventName, out thisEvent))
+		{
+			thisEvent.RemoveListener (listener);
+		}
+	}
+
+
+	#endregion /Stop Listening
+
+
+
+
+	#region Trigger Events
+
+	public static void TriggerEvent (string eventName)
+	{
+		UnityEvent thisEvent = null;
+		if (instance.eventDictionary.TryGetValue (eventName, out thisEvent))
+		{
+			thisEvent.Invoke ();
+		}
+	}
+
+
+	public static void TriggerEvent (string eventName, Vector3 data)
+	{
+		UnityEvent<Vector3> thisEvent = null;
+		if (instance.eventDictionaryVector.TryGetValue (eventName, out thisEvent))
+		{
+			thisEvent.Invoke (data);
+		}
+	}
+
+	public static void TriggerEvent (string eventName, float data)
+	{
+		UnityEvent<float> thisEvent = null;
+		if (instance.eventDictionaryFloat.TryGetValue (eventName, out thisEvent))
+		{
+			thisEvent.Invoke (data);
+		}
+	}
+
+	#endregion /Trigger Events
+
+
 }

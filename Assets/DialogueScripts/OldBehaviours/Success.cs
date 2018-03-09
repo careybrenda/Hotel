@@ -5,9 +5,8 @@ using UnityEngine.UI;
 
 
 
-    public class QuestionMark : DialogueBase
+    public class Success : DialogueBase
     {
-
 
         void Awake()
         {
@@ -30,12 +29,12 @@ using UnityEngine.UI;
 
         protected override string GetEventTrigger()
         {
-            return EventManager.DialogueAction.Hello.ToString();
+		return EventManagerOriginal.DialogueAction.Accepted.ToString();
         }
 
-        protected override EventManager.DialogueAction GetDialogueAction()
+	protected override EventManagerOriginal.DialogueAction GetDialogueAction()
         {
-            return EventManager.DialogueAction.Hello;
+		return EventManagerOriginal.DialogueAction.Accepted;
         }
 
         void Update()
@@ -43,10 +42,7 @@ using UnityEngine.UI;
             IsEventDone();
 
            
+
         }
-
     }
-
-
-
 

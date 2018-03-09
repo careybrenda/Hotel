@@ -38,11 +38,11 @@ public class GuestManager : MonoBehaviour {
 		MoveTo sn = gameObject.GetComponent<MoveTo>();
 
 		sn.DataDetails.SetMoveToString("Receptionist");
-		sn.DataDetails.SetDialogueAction(EventManager.DialogueAction.Hello);
-		sn.DataDetails.SetDialogueAction(EventManager.DialogueAction.CheckIn);
-        sn.DataDetails.SetDialogueAction(EventManager.DialogueAction.Accepted);
-        sn.DataDetails.SetDialogueAction(EventManager.DialogueAction.Denied);
-        sn.DataDetails.SetDialogueAction(EventManager.DialogueAction.GetKey);
+		sn.DataDetails.SetDialogueAction(EventManagerOriginal.DialogueAction.Hello);
+		sn.DataDetails.SetDialogueAction(EventManagerOriginal.DialogueAction.CheckIn);
+		sn.DataDetails.SetDialogueAction(EventManagerOriginal.DialogueAction.Accepted);
+		sn.DataDetails.SetDialogueAction(EventManagerOriginal.DialogueAction.Denied);
+		sn.DataDetails.SetDialogueAction(EventManagerOriginal.DialogueAction.GetKey);
         sn.enabled = true;
 
         //Turn on Guests Scripts

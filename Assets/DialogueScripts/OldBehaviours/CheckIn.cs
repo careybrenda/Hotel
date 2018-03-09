@@ -4,9 +4,9 @@ using System.Collections;
 using UnityEngine.UI;
 
 
-
-    public class Success : DialogueBase
+    public class CheckIn : DialogueBase
     {
+
 
         void Awake()
         {
@@ -26,23 +26,25 @@ using UnityEngine.UI;
             UnsubscribeToEvent();
         }
 
-
         protected override string GetEventTrigger()
         {
-            return EventManager.DialogueAction.Accepted.ToString();
+		return EventManagerOriginal.DialogueAction.CheckIn.ToString();
         }
 
-        protected override EventManager.DialogueAction GetDialogueAction()
+        protected override EventManagerOriginal.DialogueAction GetDialogueAction()
         {
-            return EventManager.DialogueAction.Accepted;
+		return EventManagerOriginal.DialogueAction.CheckIn;
         }
+
 
         void Update()
         {
             IsEventDone();
 
            
-
         }
-    }
 
+    
+
+
+}

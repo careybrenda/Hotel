@@ -108,7 +108,7 @@ public class MoveTo : MonoBehaviour {
                 DataDetails.SetTargetObj(TheDestinationObject);
                 DataDetails.SetSenderObj(gameObject);
 
-                EventManager.TriggerEvent(DataDetails);
+			EventManagerOriginal.TriggerEvent(DataDetails);
 
                 this.enabled = false;
                 //Arrived.

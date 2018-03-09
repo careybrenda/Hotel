@@ -26,12 +26,12 @@ public class Failure : DialogueBase
 
     protected override string GetEventTrigger()
     {
-        return EventManager.DialogueAction.Denied.ToString();
+		return EventManagerOriginal.DialogueAction.Denied.ToString();
     }
 
-    protected override EventManager.DialogueAction GetDialogueAction()
+	protected override EventManagerOriginal.DialogueAction GetDialogueAction()
     {
-        return EventManager.DialogueAction.Denied;
+		return EventManagerOriginal.DialogueAction.Denied;
     }
 
     void Update()

@@ -26,12 +26,12 @@ public class GetKey : DialogueBase
 
     protected override string GetEventTrigger()
     {
-        return EventManager.DialogueAction.GetKey.ToString();
+		return EventManagerOriginal.DialogueAction.GetKey.ToString();
     }
 
-    protected override EventManager.DialogueAction GetDialogueAction()
+	protected override EventManagerOriginal.DialogueAction GetDialogueAction()
     {
-        return EventManager.DialogueAction.GetKey;
+		return EventManagerOriginal.DialogueAction.GetKey;
     }
 
     void Update()

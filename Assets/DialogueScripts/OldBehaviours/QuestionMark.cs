@@ -4,7 +4,8 @@ using System.Collections;
 using UnityEngine.UI;
 
 
-    public class CheckIn : DialogueBase
+
+    public class QuestionMark : DialogueBase
     {
 
 
@@ -26,16 +27,16 @@ using UnityEngine.UI;
             UnsubscribeToEvent();
         }
 
+
         protected override string GetEventTrigger()
         {
-            return EventManager.DialogueAction.CheckIn.ToString();
+		return EventManagerOriginal.DialogueAction.Hello.ToString();
         }
 
-        protected override EventManager.DialogueAction GetDialogueAction()
+	protected override EventManagerOriginal.DialogueAction GetDialogueAction()
         {
-            return EventManager.DialogueAction.CheckIn;
+		return EventManagerOriginal.DialogueAction.Hello;
         }
-
 
         void Update()
         {
@@ -44,7 +45,8 @@ using UnityEngine.UI;
            
         }
 
-    
+    }
 
 
-}
+
+
