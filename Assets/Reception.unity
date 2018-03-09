@@ -125,7 +125,6 @@ GameObject:
   - component: {fileID: 14601452}
   - component: {fileID: 14601451}
   - component: {fileID: 14601450}
-  - component: {fileID: 14601449}
   - component: {fileID: 14601455}
   m_Layer: 0
   m_Name: Guest
@@ -134,17 +133,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &14601449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 14601448}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a45d2013cbff6458caf5a85681bd6e02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!195 &14601450
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -242,7 +230,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 14601448}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3431ff6072eef4148b22237bf247622e, type: 3}
+  m_Script: {fileID: 11500000, guid: 12f42145275fd41dbbfa5c553c45b509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &211426031
@@ -658,14 +646,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 700201521}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c884a0d8a2e29946ba31928bdcac7ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 4105df83c55364567b0fce3a23b5a41e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DoneEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: SenderEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    m_CallsDirty: 1
 --- !u!4 &700201523
 Transform:
   m_ObjectHideFlags: 0
@@ -940,6 +923,7 @@ GameObject:
   - component: {fileID: 2048982398}
   - component: {fileID: 2048982401}
   - component: {fileID: 2048982400}
+  - component: {fileID: 2048982399}
   m_Layer: 0
   m_Name: HotSpot
   m_TagString: Untagged
@@ -960,6 +944,17 @@ Transform:
   m_Father: {fileID: 211426032}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &2048982399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2048982397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79916c7ad1e2e401696cc2ccffc54d03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!64 &2048982400
 MeshCollider:
   m_ObjectHideFlags: 0
